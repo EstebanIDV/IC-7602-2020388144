@@ -1,12 +1,14 @@
 ﻿# Apuntes - 14/02/23
 ### Esteban Ignacio Durán Vargas
 ### 2020388144
-### IC - 7602 - 2023 II Semestre
+### IC - 7602 - 2023 I Semestre
 
 # Componentes de Kubernetes
 A continuación se definen múltiples componentes de Kubernetes.
 
-![Holaaaa](https://cdn.discordapp.com/attachments/462125259382849546/1076691082768810044/photo_2023-02-15_18-59-39.jpg)
+![](https://cdn.discordapp.com/attachments/462125259382849546/1076691082768810044/photo_2023-02-15_18-59-39.jpg)
+
+
 ## Namespace
 Contenedor de recursos. En una misma instalación hay n namespaces. Contiene objetos (pods, volúmenes, secrets...) de Kubernetes que van a vivir dentro de él y serán exclusivos de este.  Un pod en namespace diferente no puede acceder a un volumen de otro namespace. En la imagen se ve como el namespace dbs.
 	
@@ -81,6 +83,8 @@ Los objetos que se definen dentro de Kubernetes, no se pueden acceder dentro de 
  - **ClusterIP:** Mantiene acceso dentro de Kubernetes. Puede ser usado para definir la comunicación entre 2 pods. Es la configuración por defecto. 
  - **NodePort:** Expone un puerto aleatorio de la máquina host (arriba del puerto 30000). Así un usuario desde la computadora host puede acceder al servicio. Se puede utilizar cualquier ip de la computadora.
  - **Load Balancer:** Se comporta como nodeport, pero utiliza un puerto en específico y utiliza Load Balancers de Cloud Providers (solo se puede usar con estos).
+
+
 ### Puertos:
  - **TCP:** Transmission Control Protocol, que se usa para conexiones persistentes queduran cierta cantidad de tiempo. En este importa saber que el mensaje llegó y lo espera.
  - **UDP:** User Datagram Protocol, que se usa para conexiones stateless. En este no vigila si el mensaje llegó, no lo espera. 
@@ -102,6 +106,11 @@ Templates de Lenguaje GoLand. Con esto se parametrizan configuraciones de Kubern
 
     {{.Values.config.gc.replicas}}
 Este se usa para acceder al número de réplicas definidas para el GameController.
+
+
+
+
+
 ## Creación de un Helm Chart
 Para crear un Helm Chart solo se necesita el comando helm  y correr este comando: 
 
