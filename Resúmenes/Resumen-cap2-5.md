@@ -139,3 +139,42 @@ Este tipo permite que se multiplexen portadoras T1 en otras de orden más alto. 
 
 
 ![](https://cdn.discordapp.com/attachments/462125259382849546/1078220322576269353/image.png)
+
+# SONET/SDH
+
+Buscando estandarización para TDM, en 1989 se produjo el estándar **SONET** (Red Óptica Síncrona) y un conjunto de recomendaciones llamadas **SDH** (Jerarquía Digital Síncrona). Todo el tráfico telefónico de larga distancia de EEUU y otros países viaja por SONET en capa física. Tenía los objetivos:
+
+ 1. Interconexión entre operadores telefónicos.
+ 2. Unificar los sistemas digitales de EEUU, europeo y japonés.
+ 3. Multiplexar varios canales digitales. Avanzar más allá de T4, continuando más allá de gigabits/seg.
+ 4. Proporcionar apoyo para operaciones, administración y mantenimiento (OAM).
+
+Se quería convertir en un TDM tradicional, con ancho de banda que contuviera ranuras de tiempo para los distintos subcanales. Los intervalos se envían con suma precisión controlados por un reloj maestro al que están atados el remitente y emisor. Luego se propuso que la conmutación de celdas fuera la base de ATM para que llegaran a intervalos irregulares y asíncronos para diferenciarse de SONET.  SONET envía 810 bytes cada 125 µseg, haya o no datos. Tiene velocidad de 8000 tramas/seg y coincide con la tasa de PCM para telefonía digital.
+
+Las tramas son rectángulos de 90 columnas y nueve de alto. Da 51.84 Mbps y se llama **STS-1** (Señal Síncrona de Transporte 1). Las primeras 3 columnas son para administración del sistemas. Las primeras 3 filas son encabezado de sección y se verifica al comienzo y final de sección y las siguiente 6 con el encabezado de línea que se genera y verifica al comienzo y final de cada línea. Las tramas son consecutivas; utiliza los 2 primeros bytes con un patrón para saber el inicio. El resto de columnas son datos de usuarios. Los **SPE** (Contenedor o Sobre de Carga Útil Síncrona) empiezan en cualquier parte de la trama. La primera fila de encabezado de línea tiene un apuntador al primer byte. La primera columna del SPE es encabezado de trayectoria extremo a extremo. Confiere flexibilidad e incluso pueden abarcar 2 tramas.
+
+![](https://cdn.discordapp.com/attachments/462125259382849546/1078399128545005638/image.png)
+
+En la figura anterior se ve la jerarquía de SONET. La portadora es lo mismo que la STS-n excepto por un reordenamiento de bits para sincronización. Las SDH empiezan en OC-3 porque no hay velocidades de 51.84 Mbps para los basados en CCITT.  La tasa de datos bruta incluye encabezados, la SPE los excluye y las de usuario solo tienen 86 columnas disponibles sin encabezados. Cuando no se multiplexa una portadora se añade una c y los flujos que lo conforman se entrelazan por columna en orden.
+
+# Conmutación
+
+Existen 2 técnicas de conmutación: de circuitos y de paquetes.
+
+## Conmutación de circuitos
+
+Con llamadas telefónicas, el sistema telefónico busca una trayectoria física desde el teléfono al receptor. Cuando una llamada  pasa por una oficina de conmutación se establece una conexión entre la línea de la que llegó y una de las salidas. Antes era el operador que conectaba el cable puenteador en los enchufes. Esa trayectoria puede ir por microondas que multiplexan miles de llamadas. Una vez que existe, es  se fija desde antes de enviar cualquier dato hasta que termine la llamada. Se debe dar una señal de petición que se transmita hasta el receptor y este confirme. Luego, el único retardo es el de la señal electromagnética (5 mseg cada 1000 km). No hay peligro de congestión.
+
+
+
+## Conmutación de mensajes
+
+No se estable la trayectoria. Cuando envía un bloque datos, este se almacena en la primera oficina de conmutación y después se reenvía. Se inspecciona por error y salta de nuevo (**almacenamiento y reenvío** o store and forward). Antes se perforaba una cinta de papel y se transmitía por una línea de comunicación para luego perforarse en la siguiente oficina (**oficina de arrancado de papel**), se arrancaba y se pasaba al siguiente.
+
+## Conmutación de paquetes.
+
+La conmutación de paquetes envía paquetes conforme se necesite y no tiene trayectoria dedicada. Establece un límite de tamaño de bloque, para almacenarlo en la memoria principal del enrutador. No se puede acaparar durante muchos milisegundos y esto provoca tráfico interactivo. A veces, se pueden enviar otros paquetes antes de que los anteriores terminen de llegar. Disminuye el retardo y mejora el rendimiento. Se usan en redes de computadoras. Distintos paquetes pueden seguir distintas trayectorias dependiendo de las condiciones de red y pueden llegar en desorden.
+
+También es más tolerante a fallos; si falla la conmutación, todos los circuitos que se utilizaron se cancelan. La conmutación de paquetes puede enrutarse y evitar conmutadores averiados. En este no se reserva ancho de banda, por lo que debe esperar su turno para enviarse cada paquete. Por ende, puede fallar por congestión. No desperdicia ancho de banda y es más eficiente; no desperdicia recursos. 
+
+No utiliza transmisión de almacenamiento y reenvío donde Un paquete se almacena en memoria de enrutador y se reenvía al siguiente. Los bits fluyen de manera continua y se evita retardo. En la de circuitos se utiliza cualquier tasa de transmisión, formato o entramado de bits. En la de paquetes se determinan los parámetros básicos. Otra diferencia es que en la de circuitos el cobro  basa en distancia y tiempo. En paquetes, el tiempo no es problema sino el volumen de tráfico. Los ISP cargan una tarifa mensual y es más fácil de entender para los clientes. 
